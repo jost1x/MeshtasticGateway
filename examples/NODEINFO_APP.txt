@@ -1,0 +1,19 @@
+{'from': 4145947464, 'to': 4294967295, 'decoded': {'portnum': 'NODEINFO_APP', 'payload': b'\n\t!f71e2348\x12\x0cUnknown 2348\x1a\x03?48"\x060\xc6\xf7\x1e#H0\x04', 'user': {'id': '!f71e2348', 'longName': 'Unknown 2348', 'shortName': '?48', 'macaddr': 'MMb3HiNI', 'hwModel': 'TBEAM', 'raw': id: "!f71e2348"
+long_name: "Unknown 2348"
+short_name: "?48"
+macaddr: "0\306\367\036#H"
+hw_model: TBEAM
+}}, 'id': 2113864844, 'rxTime': 1662525931, 'rxSnr': -21.75, 'hopLimit': 3, 'raw': from: 4145947464
+to: 4294967295
+decoded {
+  portnum: NODEINFO_APP
+  payload: "\n\t!f71e2348\022\014Unknown 2348\032\003?48\"\0060\306\367\036#H0\004"
+}
+id: 2113864844
+rx_time: 1662525931
+rx_snr: -21.75
+hop_limit: 3
+, 'fromId': '!f71e2348', 'toId': '^all'}
+
+
+{'portnum': 'NODEINFO_APP', 'payload': b'\n\t!f71e2348\x12\x0cUnknown..."\x060\xc6\xf7\x1e#H0\x04', 'user': {'id': '!f71e2348', 'longName': 'Unknown 2348', 'shortName': '?48', 'macaddr': 'MMb3HiNI', 'hwModel': 'TBEAM', 'raw': id: "!f71e2348"long...el: TBEAM}}

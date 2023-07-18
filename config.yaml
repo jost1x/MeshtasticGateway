@@ -1,0 +1,34 @@
+# start of Meshtastic configure yaml
+channel_url: https://www.meshtastic.org/e/#CgMSAQESCDgGQANIAVAe
+owner: Meshtastic 2478
+owner_short: '247'
+user_prefs:
+  bluetooth:
+    enabled: true
+    fixedPin: 111111
+    mode: FIXED_PIN
+  device:
+    serialEnabled: true
+  display:
+    screenOnSecs: 30
+  lora:
+    hopLimit: 3
+    region: ANZ
+    txEnabled: true
+    txPower: 30
+  network:
+    ntpServer: 0.pool.ntp.org
+  position:
+    gpsAttemptTime: 120
+    gpsEnabled: true
+    gpsUpdateInterval: 120
+    positionBroadcastSecs: 120
+    positionBroadcastSmartEnabled: true
+    positionFlags: 33
+  power:
+    lsSecs: 300
+    meshSdsTimeoutSecs: 7200
+    minWakeSecs: 10
+    sdsSecs: 4294967295
+    waitBluetoothSecs: 60
+

@@ -1,0 +1,11 @@
+{'from': 4145947464, 'to': 4294967295, 'decoded': {'portnum': 'TEXT_MESSAGE_APP', 'payload': b'Probando', 'text': 'Probando'}, 'id': 2392570672, 'rxTime': 1662522461, 'rxSnr': 9.5, 'hopLimit': 3, 'raw': from: 4145947464
+to: 4294967295
+decoded {
+  portnum: TEXT_MESSAGE_APP
+  payload: "Probando"
+}
+id: 2392570672
+rx_time: 1662522461
+rx_snr: 9.5
+hop_limit: 3
+, 'fromId': '!f71e2348', 'toId': '^all'}

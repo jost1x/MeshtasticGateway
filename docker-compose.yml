@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+
+  mesh-gateway:
+    build: .
+    container_name: mesh-gateway
+    networks:
+      - internal
+    logging:
+      driver: json-file
+      options:
+        max-size: 20k
+    env_file:
+      - ./.env
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    restart: unless-stopped
+
+networks:
+  internal:
+    name: internal
+    external: true

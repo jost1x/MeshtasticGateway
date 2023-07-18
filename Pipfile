@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+meshtastic = "==1.3.41"
+pytap2 = "*"
+pydantic = {extras = ["dotenv"], version = "==1.10.11"}
+rich = "*"
+influxdb-client = "*"
+tk-tools = "*"
+
+[dev-packages]
+autopep8 = "*"
+devtools = "*"
+
+[requires]
+python_version = "3.11"
