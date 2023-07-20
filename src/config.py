@@ -10,7 +10,7 @@ class InfluxDBModel(BaseModel):
 
 class Settings(BaseSettings):
     serial: str = '/dev/ttyACM0'
-    influx: bool = False
+    enable_influx: bool = False
     influxdb: InfluxDBModel
 
 

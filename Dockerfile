@@ -7,19 +7,14 @@ ENV PYTHONFAULTHANDLER 1
 
 RUN apt-get update && apt-get install -y --no-install-recommends gcc
 
-RUN pip install --upgrade pip \
-    && pip install pipenv
+RUN pip install --upgrade pip && pip install pipenv
 
 WORKDIR /app
 
-COPY ./src /app
-
-COPY Pipfile* /app/
+COPY Pipfile Pipfile.lock /app/
 
 RUN pipenv install --system --deploy --ignore-pipfile
 
-COPY ./src /app/src
+COPY src /app/src
 
 CMD ["python", "./src/app.py"]
-
-

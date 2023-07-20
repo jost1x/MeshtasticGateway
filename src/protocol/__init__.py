@@ -1,2 +1,0 @@
-from protocol.position_app import PositionApp
-from protocol.text_message_app import TextMessageApp

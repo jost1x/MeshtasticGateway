@@ -2,29 +2,22 @@ from pydantic import ValidationError
 from meshtastic.serial_interface import SerialInterface
 from pubsub import pub
 from rich import print
+from time import sleep
 
-from database.influxdb import InfluxDB, Point
+from database.influxdb import InfluxDB
 from models.base import BasePacket
-from protocol import PositionApp
+from protocol.position_app import PositionApp
 from protocol.telemetry import TelemetryApp
-
-ALLOW_PROTOCOL = [
-    "TEXT_MESSAGE_APP",
-    "POSITION_APP",
-    "NODEINFO_APP",
-    "TELEMETRY_APP"
-]
-
-NOT_IMPLEMENTED = None
 
 
 class ServiceGateway:
-
     serial: str
     interface: SerialInterface
     influx: InfluxDB | None = None
 
-    def __init__(self, serial: str = '/dev/ttyACM0', influx: InfluxDB | None = None) -> None:
+    def __init__(
+        self, serial: str = "/dev/ttyACM0", influx: InfluxDB | None = None
+    ) -> None:
         self.serial = serial
         self.influx = influx
         self.subscriptions()
@@ -37,28 +30,43 @@ class ServiceGateway:
 
     def loop(self):
         while True:
-            pass
+            sleep(0.1)
 
     def onReceive(self, packet, interface):
-        try: 
+        try:
             message = BasePacket.parse_obj(packet)
             self.protocol_matching(message=message)
         except ValidationError as e:
             print(e.json())
 
-    def protocol_matching(self, message: BasePacket):
-        match message.decoded.portnum:
-            case "ADMIN_APP":
-                print(f"NOT_IMPLEMENTED: {message.decoded.portnum}")
-            case "TEXT_MESSAGE_APP":
-                print(f"NOT_IMPLEMENTED: {message.decoded.portnum}")
-            case "POSITION_APP":
-                protocol = PositionApp(message, self.influx)
-                protocol.save_data()
-            case "NODEINFO_APP":
-                print(f"NOT_IMPLEMENTED: {message.decoded.portnum}")
-            case "TELEMETRY_APP":
-                protocol = TelemetryApp(message, self.influx)
-                protocol.save_data()
-            case _:
-                print(f"NOT_REGISTER_PROTOCOL: {message.decoded.portnum}")
+    def protocol_matching(self, message: BasePacket) -> None:
+        protocol_handlers = {
+            "ADMIN_APP": self.handle_admin_app,
+            "TEXT_MESSAGE_APP": self.handle_text_message_app,
+            "POSITION_APP": self.handle_position_app,
+            "NODEINFO_APP": self.handle_nodeinfo_app,
+            "TELEMETRY_APP": self.handle_telemetry_app,
+        }
+        portnum = message.decoded.portnum
+        handler = protocol_handlers.get(portnum, self.handle_unknown_protocol)
+        handler(message)
+
+    def handle_admin_app(self, message: BasePacket):
+        print(f"NOT_IMPLEMENTED: {message.decoded.portnum}")
+
+    def handle_text_message_app(self, message: BasePacket):
+        print(f"NOT_IMPLEMENTED: {message.decoded.portnum}")
+
+    def handle_position_app(self, message: BasePacket):
+        protocol = PositionApp(message)
+        protocol.save_data(self.influx)
+
+    def handle_nodeinfo_app(self, message: BasePacket):
+        print(f"NOT_IMPLEMENTED: {message.decoded.portnum}")
+
+    def handle_telemetry_app(self, message: BasePacket):
+        protocol = TelemetryApp(message)
+        protocol.save_data(self.influx)
+
+    def handle_unknown_protocol(self, message: BasePacket):
+        print(f"NOT_REGISTER_PROTOCOL: {message.decoded.portnum}")

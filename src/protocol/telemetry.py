@@ -1,35 +1,32 @@
 from database.influxdb import InfluxDB, Point
-from models.base import BasePacket, Telemetry
-from rich import print
-
+from models.base import BasePacket
+from models.decoded_message import Telemetry
 
 class TelemetryApp:
-
     packet: BasePacket
-    influx: InfluxDB | None
 
-    def __init__(self, packet: BasePacket, influx: InfluxDB | None ) -> None:
+    def __init__(self, packet: BasePacket) -> None:
         self.packet = packet
-        self.influx = influx
 
-    def save_data(self):
-        if self.influx is not None:
-            telemetry: Telemetry | None = self.packet.decoded.telemetry
+    def save_data(self, influx: InfluxDB | None):
+        telemetry: Telemetry | None = self.packet.decoded.telemetry
 
-            if telemetry is not None:
-                if telemetry.deviceMetrics is not None:
-                    fields = {
-                        'batteryLevel': telemetry.deviceMetrics.batteryLevel,
-                        'voltage': telemetry.deviceMetrics.voltage,
-                        'airUtilTx': telemetry.deviceMetrics.airUtilTx,
-                    }
+        if telemetry is not None and telemetry.deviceMetrics is not None:
+            fields: dict[str, float | int | None] = {
+                'batteryLevel': telemetry.deviceMetrics.batteryLevel,
+                'voltage': telemetry.deviceMetrics.voltage,
+                'airUtilTx': telemetry.deviceMetrics.airUtilTx,
+            }
 
-                    point = Point('tbeam').tag('device', self.packet.fromId)
-        
-                    for k, v in fields.items():
-                        if v is not None:
-                            point = point.field(k, v)
+            point = (
+                Point('tbeam')
+                .tag('device', self.packet.fromId)
+                .time(telemetry.time)
+            )
 
-                    point = point.time(telemetry.time)
-        
-                    self.influx.write(point)
+            for k, v in fields.items():
+                if v is not None:
+                    point.field(k, v)
+
+            if influx is not None:
+                influx.write(point)
